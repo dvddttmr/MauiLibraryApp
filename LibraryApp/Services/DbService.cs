@@ -182,6 +182,74 @@ namespace LibraryApp.Services
             {
                 await db.DeleteAsync(mp);
             }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        #endregion
+
+        #region Publisher
+
+        public async Task CreatePublisher(Publisher publisher)
+        {
+            try
+            {
+                await db.InsertAsync(publisher);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task<List<Publisher>> GetAllPublishers()
+        {
+            try
+            {
+                return await db.Table<Publisher>().ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task<Publisher> GetPublisherById(int id)
+        {
+            try
+            {
+                return await db.Table<Publisher>().Where(p => p.Id == id).FirstOrDefaultAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task UpdatePublisher(Publisher publisher)
+        {
+            try
+            {
+                await db.UpdateAsync(publisher);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task DeletePublisher(Publisher publisher)
+        {
+            try
+            {
+                await db.DeleteAsync(publisher);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
         }
 
         #endregion
