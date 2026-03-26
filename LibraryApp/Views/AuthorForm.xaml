@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:LibraryApp.ViewModels"
+             x:Class="LibraryApp.Views.AuthorForm"
+             x:DataType="viewModels:AuthorVM"
+             Title="AuthorForm">
+    <VerticalStackLayout>
+        <Label Text="Author"/>
+        <Entry x:Name="FirstName"
+               Placeholder="First Name"
+               Text="{Binding FirstName}"/>
+        <Entry x:Name="MiddleName"
+               Placeholder="Middle Name"
+               Text="{Binding MiddleName}"/>
+        <Entry x:Name="LastName"
+               Placeholder="Last Name"
+               Text="{Binding LastName}"/>
+        <Picker x:Name="RolePicker"
+                ItemsSource="{Binding RoleOptions}"
+                SelectedItem="{Binding SelectedRole, Mode=TwoWay}"/>
+        <Editor x:Name="Biography"
+                Placeholder="Birography"
+                Text="{Binding Biography}"/>
+        <HorizontalStackLayout Spacing="10">
+            <Button x:Name="Delete"
+                    Text="Delete"
+                    Command="{Binding DeleteCommand}"/>
+            <Button x:Name="Save"
+                    Text="Save"
+                    Command="{Binding SaveCommand}"/>
+            <Button x:Name="Cancel"
+                    Text="Cancel"
+                    Command="{Binding CancelCommand}"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>
