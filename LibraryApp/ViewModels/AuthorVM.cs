@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using LibraryApp.Models;
 using LibraryApp.Services;
+using LibraryApp.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -87,7 +88,7 @@ namespace LibraryApp.ViewModels
         public List<Media> Works { get; set; } = new();
 
         
-
+        public ICommand SeletedBookCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand CancelCommand { get; set; }
@@ -100,6 +101,7 @@ namespace LibraryApp.ViewModels
             SaveCommand = new AsyncRelayCommand(Save);
             DeleteCommand = new AsyncRelayCommand(Delete);
             CancelCommand = new AsyncRelayCommand(Cancel);
+            SeletedBookCommand = new AsyncRelayCommand<Media>(SelectedBookChanged);
         }
 
         public AuthorVM(DbService db, Person author)
@@ -119,6 +121,14 @@ namespace LibraryApp.ViewModels
             foreach(var mp in mediaPersons)
             {
                 Works.Add(await db.GetMediaById(mp.MediaId));
+            }
+        }
+
+        public async Task SelectedBookChanged(Media media)
+        {
+            if(media != null)
+            {
+                await Shell.Current.GoToAsync($"{nameof(BookForm)}?Id={media.Id}");
             }
         }
 

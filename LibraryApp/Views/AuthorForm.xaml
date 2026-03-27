@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:LibraryApp.ViewModels"
+             xmlns:models="clr-namespace:LibraryApp.Models"
              x:Class="LibraryApp.Views.AuthorForm"
              x:DataType="viewModels:AuthorVM"
              Title="AuthorForm">
@@ -22,6 +23,21 @@
         <Editor x:Name="Biography"
                 Placeholder="Birography"
                 Text="{Binding Biography}"/>
+        <CollectionView ItemsSource="{Binding Works}"
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding SeletedBookCommand}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Media">
+                    <HorizontalStackLayout>
+                        <Label Text="{Binding Title}"/>
+                        <Label Text="{Binding PublicationYear}" TextColor="Silver"/>
+                    </HorizontalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
         <HorizontalStackLayout Spacing="10">
             <Button x:Name="Delete"
                     Text="Delete"
