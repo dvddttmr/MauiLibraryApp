@@ -5,7 +5,7 @@
              Title="PublisherList">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="Publishers"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>

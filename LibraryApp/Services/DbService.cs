@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LibraryApp.Models;
+﻿using LibraryApp.Models;
 using SQLite;
 
 namespace LibraryApp.Services
 {
     public class DbService
     {
-        private SQLiteAsyncConnection db;
+        private readonly SQLiteAsyncConnection db;
 
         public DbService(string dbPath)
         {
@@ -17,10 +14,10 @@ namespace LibraryApp.Services
 
         public async Task Init()
         {
-            await db.CreateTableAsync<Media>();
-            await db.CreateTableAsync<Person>();
-            await db.CreateTableAsync<MediaPerson>();
-            await db.CreateTableAsync<Publisher>();
+            await RunWithTimeout(() => db.CreateTableAsync<Media>(), 3000);
+            await RunWithTimeout(() => db.CreateTableAsync<Person>(), 3000);
+            await RunWithTimeout(() => db.CreateTableAsync<MediaPerson>(), 3000);
+            await RunWithTimeout(() => db.CreateTableAsync<Publisher>(),3000);
         }
 
         #region Media
@@ -88,7 +85,7 @@ namespace LibraryApp.Services
 
         #region Person
 
-        public async Task CreatePerson(Person person)
+        public async Task<int> CreatePerson(Person person)
         {
             try
             {
@@ -98,6 +95,7 @@ namespace LibraryApp.Services
             {
                 throw ex.GetBaseException();
             }
+            return person.Id;
         }
 
         public async Task<List<Person>> GetAllPersons()
@@ -253,5 +251,18 @@ namespace LibraryApp.Services
         }
 
         #endregion
+
+        private async Task RunWithTimeout(Func<Task> action, int timeoutMs)
+        {
+            var task = action();
+            var delay = Task.Delay(timeoutMs);
+
+            var completed = await Task.WhenAny(task, delay);
+
+            if (completed == delay)
+                throw new TimeoutException("Database operation timed out.");
+
+            await task;
+        }
     }
 }

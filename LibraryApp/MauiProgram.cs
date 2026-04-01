@@ -1,4 +1,5 @@
 ﻿using LibraryApp.Services;
+using LibraryApp.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace LibraryApp
@@ -16,18 +17,20 @@ namespace LibraryApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             var path = Path.Combine(FileSystem.AppDataDirectory, "Library.db3");
-            builder.Services.AddSingleton(new DbService(path));
+            builder.Services.AddSingleton(provider =>
+            {
+                return new DbService(path);
+            });
+            builder.Services.AddTransient<AuthorListVM>();
+            builder.Services.AddTransient<AuthorVM>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
             var app = builder.Build();
 
-            if(File.Exists(path))
-            {
-                var db = app.Services.GetService<DbService>();
-                db.Init().GetAwaiter().GetResult();
-            }
+            var db = app.Services.GetService<DbService>();
+            Task.Run(async () => await db.Init());
 
             return app;
         }

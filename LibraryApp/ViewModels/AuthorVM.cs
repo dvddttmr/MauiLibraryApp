@@ -10,24 +10,20 @@ namespace LibraryApp.ViewModels
 {
     public class AuthorVM : ObservableObject, IQueryAttributable
     {
-        private Person author = new Person();
+        private Person person = new Person();
 
         private readonly DbService db;
 
-        private string Source { get; set; }
-        private int SourceId { get; set; }
-        public ObservableCollection<string> RoleOptions { get; } =
-            new ObservableCollection<string>()
-            { "Author", "Illustrator", "Narrator", "Editor" };
+        public string[] RoleOptions { get; } = { "Author", "Illustrator", "Narrator", "Editor", "Contributor"};
 
         public string FirstName
         {
-            get => author.FirstName;
+            get => person.FirstName;
             set
             {
-                if(author.FirstName != value)
+                if(person.FirstName != value)
                 {
-                    author.FirstName = value;
+                    person.FirstName = value;
                     OnPropertyChanged();
                 }
             }
@@ -35,12 +31,12 @@ namespace LibraryApp.ViewModels
 
         public string MiddleName
         {
-            get => author.MiddleName;
+            get => person.MiddleName;
             set
             {
-                if(author.MiddleName != value)
+                if(person.MiddleName != value)
                 {
-                    author.MiddleName = value;
+                    person.MiddleName = value;
                     OnPropertyChanged();
                 }
             }
@@ -48,38 +44,118 @@ namespace LibraryApp.ViewModels
 
         public string LastName
         {
-            get => author.LastName;
+            get => person.LastName;
             set
             {
-                if (author.LastName != value)
+                if (person.LastName != value)
                 {
-                    author.LastName = value;
+                    person.LastName = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public string SelectedRole
+        public string Title
         {
-            get => author.Role;
+            get => person.Title;
             set
             {
-                if(author.Role != value)
+                if(person.Title != value)
                 {
-                    author.Role = value;
+                    person.Title = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        public string Suffix
+        {
+            get => person.Suffix;
+            set
+            {
+                if(person.Suffix != value)
+                {
+                    person.Suffix = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string PreferredName
+        {
+            get => person.PreferredName;
+            set
+            {
+                if(person.PreferredName != value)
+                {
+                    person.PreferredName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public DateTime BirthDate
+        {
+            get => person.BirthDate;
+            set
+            {
+                if(person.BirthDate != value)
+                {
+                    person.BirthDate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool isDeceased;
+        public bool IsDeceased 
+        { 
+            get => isDeceased;
+            set
+            {
+                if (isDeceased != value)
+                {
+                    isDeceased = value;
+                    OnPropertyChanged();
+                }
+            } 
+        }
+
+        public DateTime? DeathDate =>
+            IsDeceased ? SelectedDeathDate : null;
+
+        private DateTime selectedDeathDate = DateTime.Today;
+        public DateTime SelectedDeathDate 
+        { 
+            get => selectedDeathDate; 
+            set
+            {
+                if(selectedDeathDate != value)
+                {
+                    selectedDeathDate = value;
+                    OnPropertyChanged();
+                }
+            } 
+        }
+
+        public string? ImagePath
+        {
+            get => person.ImagePath;
+            set
+            {
+                person.ImagePath = value;
+                OnPropertyChanged();
             }
         }
 
         public string Biography
         {
-            get => author.Biography;
+            get => person.Biography;
             set
             {
-                if(author.Biography != value)
+                if(person.Biography != value)
                 {
-                    author.Biography = value;
+                    person.Biography = value;
                     OnPropertyChanged();
                 }
             }
@@ -88,6 +164,7 @@ namespace LibraryApp.ViewModels
         public List<Media> Works { get; set; } = new();
 
         
+        public ICommand BrowseImagesCommand { get; set; }
         public ICommand SeletedBookCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
@@ -98,30 +175,34 @@ namespace LibraryApp.ViewModels
         {
             this.db = db;
 
+            BrowseImagesCommand = new AsyncRelayCommand(BrowseImages);
             SaveCommand = new AsyncRelayCommand(Save);
             DeleteCommand = new AsyncRelayCommand(Delete);
             CancelCommand = new AsyncRelayCommand(Cancel);
             SeletedBookCommand = new AsyncRelayCommand<Media>(SelectedBookChanged);
         }
 
-        public AuthorVM(DbService db, Person author)
-        {
-            this.db = db;
-            this.author = author;
-            GetWorks();
-
-            SaveCommand = new AsyncRelayCommand(Save);
-            DeleteCommand = new AsyncRelayCommand(Delete);
-            CancelCommand = new AsyncRelayCommand(Cancel);
-        }
-
         private async void GetWorks()
         {
-            var mediaPersons = (await db.GetAllMediaPersons()).Where(mp => mp.PersonId == author.Id);
+            var mediaPersons = (await db.GetAllMediaPersons()).Where(mp => mp.PersonId == person.Id);
             foreach(var mp in mediaPersons)
             {
                 Works.Add(await db.GetMediaById(mp.MediaId));
             }
+        }
+
+        public async Task BrowseImages()
+        {
+            var result = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Select an Image",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            if (result == null)
+                return;
+
+            ImagePath = result.FullPath;
         }
 
         public async Task SelectedBookChanged(Media media)
@@ -134,20 +215,40 @@ namespace LibraryApp.ViewModels
 
         public async Task Save()
         {
-            if(author.Id != 0)
+            //process DeathDate
+            person.DeathDate = IsDeceased ? SelectedDeathDate : null;
+
+            bool isNew = person.Id == 0;
+
+            //1.  Process New Persons
+            if(isNew)
             {
-                await db.UpdatePerson(author);
+                person.Id = await db.CreatePerson(person);
             }
-            else
+
+            //2. Process Image
+            if (ImagePath != null)
             {
-                await db.CreatePerson(author);
+                var fileName = $"{person.Id}.jpg";
+                var savePath = Path.Combine(FileSystem.AppDataDirectory, "PersonFaces", fileName);
+                ImageService.ResizeAndCrop(
+                    sourcePath: ImagePath,
+                    destinationPath: savePath,
+                    targetWidth: 150,
+                    targetHeight: 200);
+                ImagePath = savePath;
             }
+
+            //3. Update the Person (For both new and existing)
+            await db.UpdatePerson(person);
+
+            //
             await Shell.Current.GoToAsync($"..?saved=true");
         }
 
         public async Task Delete()
         {
-            await db.DeletePerson(author);
+            await db.DeletePerson(person);
             await Shell.Current.GoToAsync($"..?deleted=true");
         }
 
@@ -161,31 +262,22 @@ namespace LibraryApp.ViewModels
             if (query.TryGetValue("id", out var idObj))
             {
                 int id = int.Parse(idObj.ToString());
-                var auth = await db.GetPersonById(id);
-                if (auth != null)
-                {
-                    author = auth;
-                    RefreshProperties();
-                }
-                else
-                {
-                    throw new Exception("The author could not be found");
-                }
-            }
-
-            if(query.TryGetValue("source", out var source))
-            {
-                this.Source = (string)source;
-                if(query.TryGetValue("sourceId", out var sourceId))
-                {
-                    this.SourceId = (int)sourceId;
-                }
+                await LoadPerson(id);
             }
         }
 
-        public async Task Reload()
+        public async Task LoadPerson(int id)
         {
-            author = await db.GetPersonById(author.Id);
+            this.person = await db.GetPersonById(id);
+            if(person.DeathDate.HasValue)
+            {
+                IsDeceased = true;
+                SelectedDeathDate = (DateTime)person.DeathDate;
+            }
+            else
+            {
+                IsDeceased = false;
+            }
             GetWorks();
             RefreshProperties();
         }
@@ -195,7 +287,11 @@ namespace LibraryApp.ViewModels
             OnPropertyChanged(nameof(FirstName));
             OnPropertyChanged(nameof(MiddleName));
             OnPropertyChanged(nameof(LastName));
-            OnPropertyChanged(nameof(SelectedRole));
+            OnPropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(Suffix));
+            OnPropertyChanged(nameof(PreferredName));
+            OnPropertyChanged(nameof(BirthDate));
+            OnPropertyChanged(nameof(DeathDate));
             OnPropertyChanged(nameof(Biography));
         }
     }
