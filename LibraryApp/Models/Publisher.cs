@@ -10,5 +10,7 @@ namespace LibraryApp.Models
         public string City { get; set; } = "";
         public string State { get; set; } = "";
         public string Country { get; set; } = "";
+        public string LogoPath { get; set; } = "";
+        public string About { get; set; } = "";
     }
 }

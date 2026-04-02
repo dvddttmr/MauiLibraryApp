@@ -8,19 +8,19 @@
     Title="LibraryApp">
 
     <TabBar>
-        <!--<ShellContent
+        <ShellContent
             Title="Books"
-            ContentTemplate="{DataTemplate views:BookList}"/>-->
+            ContentTemplate="{DataTemplate views:BookList}"/>
         <ShellContent
             Title="Authors"
             ContentTemplate="{DataTemplate views:AuthorList}"/>
-        <!--<ShellContent
+        <ShellContent
             Title="Publishers"
             ContentTemplate="{DataTemplate views:PublisherList}"/>
         <ShellContent
             Title="About"
             ContentTemplate="{DataTemplate views:About}"
-            Icon="{FontImageSource Glyph='?',Size=22, Color=Black}"/>-->
+            Icon="{FontImageSource Glyph='?',Size=22, Color=Black}"/>
     </TabBar>
 
 </Shell>

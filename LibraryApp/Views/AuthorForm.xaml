@@ -6,80 +6,83 @@
              x:Class="LibraryApp.Views.AuthorForm"
              x:DataType="viewModels:AuthorVM"
              Title="AuthorForm">
-    <VerticalStackLayout Padding="20" Spacing="10">
-        <Label Text="Author"/>
-        <Entry x:Name="FirstName"
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <Label Text="Author" FontSize="24" FontAttributes="Bold"/>
+            <Entry x:Name="FirstName"
                Placeholder="First Name"
                Text="{Binding FirstName}"/>
-        <Entry x:Name="MiddleName"
+            <Entry x:Name="MiddleName"
                Placeholder="Middle Name"
                Text="{Binding MiddleName}"/>
-        <Entry x:Name="LastName"
+            <Entry x:Name="LastName"
                Placeholder="Last Name"
                Text="{Binding LastName}"/>
-        <Entry x:Name="Title"
+            <Entry x:Name="Title"
                 Placeholder="Title"
                 Text="{Binding Title}"/>
-        <Entry x:Name="Suffix"
+            <Entry x:Name="Suffix"
                 Placeholder="Suffix"
                 Text="{Binding Suffix}"/>
-        <Entry x:Name="PreferredName"
+            <Entry x:Name="PreferredName"
                 Placeholder="Preferred Name"
                 Text="{Binding PreferredName}"/>
-        <HorizontalStackLayout Padding="10" Spacing="10">
-            <Label Text="Date of Birth"/>
-            <DatePicker x:Name="BirthDatePicker"
+            <HorizontalStackLayout Padding="10" Spacing="10">
+                <Label Text="Date of Birth"/>
+                <DatePicker x:Name="BirthDatePicker"
                         Date="{Binding BirthDate}" />
-        </HorizontalStackLayout>
-        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-            <Label Text="Is this person still alive?  (Y/N)"/>
-            <Switch IsToggled="{Binding IsDeceased}" />
-        </HorizontalStackLayout>
-        <HorizontalStackLayout IsVisible="{Binding IsDeceased}" Padding="10" Spacing="10">
-            <Label Text="Date of Death"/>
-            <DatePicker x:Name="DeathDatePicker"
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <Label Text="Is this person still alive?  (Y/N)"/>
+                <Switch IsToggled="{Binding IsDeceased}" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout IsVisible="{Binding IsDeceased}" Padding="10" Spacing="10">
+                <Label Text="Date of Death"/>
+                <DatePicker x:Name="DeathDatePicker"
                         IsEnabled="{Binding IsDeceased}"
                         Date="{Binding SelectedDeathDate}" />
-        </HorizontalStackLayout>
-        <Border Stroke="Gray" StrokeThickness="2" Padding="10" Background="White" StrokeShape="RoundRectangle 8">
-            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
-                <Image Source="{Binding ImagePath}" WidthRequest="150" HeightRequest="200" Aspect="AspectFill" />
-                <Label Text="Tap to choose image" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
-            </VerticalStackLayout>
+            </HorizontalStackLayout>
+            <Border Stroke="Gray" StrokeThickness="2" Padding="10" Background="White" StrokeShape="RoundRectangle 8">
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <Image Source="{Binding ImagePath}" WidthRequest="150" HeightRequest="200" Aspect="AspectFill" />
+                    <Label Text="Tap to choose image" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                </VerticalStackLayout>
 
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding BrowseImagesCommand}" />
-            </Border.GestureRecognizers>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BrowseImagesCommand}" />
+                </Border.GestureRecognizers>
 
-        </Border>
-        <Editor x:Name="Biography"
-                Placeholder="Biography"
-                Text="{Binding Biography}"/>
-        <CollectionView ItemsSource="{Binding Works}"
+            </Border>
+            <Editor x:Name="Biography"
+                    Placeholder="Biography"
+                    Text="{Binding Biography}" 
+                    AutoSize="TextChanges"/>
+            <CollectionView ItemsSource="{Binding Works}"
                         SelectionMode="Single"
                         SelectionChangedCommand="{Binding SeletedBookCommand}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Media">
-                    <HorizontalStackLayout>
-                        <Label Text="{Binding Title}"/>
-                        <Label Text="{Binding PublicationYear}" TextColor="Silver"/>
-                    </HorizontalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <HorizontalStackLayout Spacing="10">
-            <Button x:Name="Delete"
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Media">
+                        <HorizontalStackLayout>
+                            <Label Text="{Binding Title}"/>
+                            <Label Text="{Binding PublicationYear}" TextColor="Silver"/>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <HorizontalStackLayout Spacing="10">
+                <Button x:Name="Delete"
                     Text="Delete"
                     Command="{Binding DeleteCommand}"/>
-            <Button x:Name="Save"
+                <Button x:Name="Save"
                     Text="Save"
                     Command="{Binding SaveCommand}"/>
-            <Button x:Name="Cancel"
+                <Button x:Name="Cancel"
                     Text="Cancel"
                     Command="{Binding CancelCommand}"/>
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

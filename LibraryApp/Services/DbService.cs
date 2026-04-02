@@ -190,7 +190,7 @@ namespace LibraryApp.Services
 
         #region Publisher
 
-        public async Task CreatePublisher(Publisher publisher)
+        public async Task<int> CreatePublisher(Publisher publisher)
         {
             try
             {
@@ -200,6 +200,7 @@ namespace LibraryApp.Services
             {
                 throw ex.GetBaseException();
             }
+            return publisher.Id;
         }
 
         public async Task<List<Publisher>> GetAllPublishers()

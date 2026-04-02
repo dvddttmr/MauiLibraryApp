@@ -292,6 +292,7 @@ namespace LibraryApp.ViewModels
             OnPropertyChanged(nameof(PreferredName));
             OnPropertyChanged(nameof(BirthDate));
             OnPropertyChanged(nameof(DeathDate));
+            OnPropertyChanged(nameof(ImagePath));
             OnPropertyChanged(nameof(Biography));
         }
     }

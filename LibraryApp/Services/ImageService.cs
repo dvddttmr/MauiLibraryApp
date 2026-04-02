@@ -44,6 +44,10 @@ namespace LibraryApp.Services
             using var image = SKImage.FromBitmap(resized);
             using var data = image.Encode(SKEncodedImageFormat.Jpeg, quality);
 
+            var directory = Path.GetDirectoryName(destinationPath);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
             using var output = File.OpenWrite(destinationPath);
             data.SaveTo(output);
         }

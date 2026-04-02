@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models ="clr-namespace:LibraryApp.Models"
+             xmlns:viewModels="clr-namespace:LibraryApp.ViewModels"
+             x:Class="LibraryApp.Views.PublisherForm"
+             x:DataType="viewModels:PublisherVM"
+             Title="Publisher">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="Publisher" FontSize="Header" FontAttributes="Bold"/>
+            <Entry Text="{Binding Name}"
+                   Placeholder="Name"/>
+            <Entry Text="{Binding City}"
+                   Placeholder="City"/>
+            <Entry Text="{Binding State}"
+                   Placeholder="State"/>
+            <Entry Text="{Binding Country}"
+                   Placeholder="Country"/>
+            <Border Stroke="Gray"
+                    StrokeThickness="2"
+                    Padding="10"
+                    Background="White"
+                    StrokeShape="RoundRectangle 8">
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <Image Source="{Binding LogoPath}" WidthRequest="200" HeightRequest="200" Aspect="AspectFill"/>
+                    <Label Text="Tap to choose image" FontSize="12" TextColor="Gray" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BrowseLogoCommand}"/>
+                </Border.GestureRecognizers>
+            </Border>
+            <Editor Text="{Binding About}"
+                   Placeholder="About the Company"
+                    AutoSize="TextChanges"/>
+            <CollectionView ItemsSource="{Binding Works}"
+                    SelectionMode="Single"
+                    SelectionChangedCommand="{Binding SelectWorkCommand}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Media">
+                        <HorizontalStackLayout>
+                            <Label Text="{Binding Title}"/>
+                            <Label Text="{Binding PublicationYear}" TextColor="Silver"/>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
