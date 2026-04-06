@@ -9,6 +9,7 @@ namespace LibraryApp
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(AuthorForm), typeof(AuthorForm));
+            Routing.RegisterRoute(nameof(PublisherForm), typeof(PublisherForm));
         }
     }
 }

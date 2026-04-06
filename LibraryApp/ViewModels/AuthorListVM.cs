@@ -19,18 +19,19 @@ namespace LibraryApp.ViewModels
             this.db = db;
             //LoadAuthors();
             NewCommand = new AsyncRelayCommand(NewAuthor);
-            SelectAuthorCommand = new AsyncRelayCommand<Person>(SelectAuthor);
+            SelectAuthorCommand = new AsyncRelayCommand<Person>(p => SelectAuthor(p!));
         }
 
         public async void LoadAuthors()
         {
             AuthorList.Clear();
             var authors = await db.GetAllPersons();
+
             foreach(var auth in authors)
             {
                 AuthorList.Add(auth);
             }
-            AuthorList.OrderBy(a => a.LastName);
+            AuthorList = new ObservableCollection<Person>(AuthorList.OrderBy(a => a.LastName));
         }
 
         public async Task NewAuthor()
@@ -38,7 +39,7 @@ namespace LibraryApp.ViewModels
             await Shell.Current.GoToAsync(nameof(AuthorForm));
         }
 
-        public async Task SelectAuthor(Person person)
+        public async Task SelectAuthor(Person? person)
         {
             if(person != null)
             {

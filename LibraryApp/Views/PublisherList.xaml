@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:LibraryApp.Models"
+             xmlns:viewModels="clr-namespace:LibraryApp.ViewModels"
              x:Class="LibraryApp.Views.PublisherList"
+             x:DataType="viewModels:PublisherListVM"
              Title="PublisherList">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Publisher" Command="{Binding NewCommand}"/>
+    </ContentPage.ToolbarItems>
+
     <VerticalStackLayout>
         <Label 
             Text="Publishers"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            HorizontalOptions="Center" 
+            FontSize="24"
+            TextDecorations="Underline"
+            FontAttributes="Bold"/>
+        <ScrollView>
+            <CollectionView ItemsSource="{Binding Publishers}"
+                        Margin="20"
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding SelectedPublisherCommand}"
+                        SelectionChangedCommandParameter="{Binding x:DataType=CollectionView, Source={RelativeSource Self}, Path=SelectedItem}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Publisher">
+                        <Label Text="{Binding Name}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </ScrollView>
     </VerticalStackLayout>
 </ContentPage>

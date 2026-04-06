@@ -183,7 +183,8 @@ namespace LibraryApp.ViewModels
         {
             if(query.TryGetValue("Id", out var idObj))
             {
-                await LoadPublisher((int)idObj);
+                if(int.TryParse(idObj.ToString(),out int id))
+                    await LoadPublisher(id);
             }
         }
 

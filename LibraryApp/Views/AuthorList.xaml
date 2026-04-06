@@ -11,22 +11,27 @@
     </ContentPage.ToolbarItems>
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="Authors"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <CollectionView ItemsSource="{Binding AuthorList}"
+            HorizontalOptions="Center" 
+            FontSize="24"
+            TextDecorations="Underline"
+            FontAttributes="Bold"/>
+        <ScrollView>
+            <CollectionView ItemsSource="{Binding AuthorList}"
                         Margin="20"
                         SelectionMode="Single"
                         SelectionChangedCommand="{Binding SelectAuthorCommand}"
                         SelectionChangedCommandParameter="{Binding x:DataType=CollectionView, Source={RelativeSource Self}, Path=SelectedItem}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Person">
-                    <Label Text="{Binding FullName}"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Person">
+                        <Label Text="{Binding FullName}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
     </VerticalStackLayout>
 </ContentPage>

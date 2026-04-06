@@ -23,6 +23,8 @@ namespace LibraryApp
             });
             builder.Services.AddTransient<AuthorListVM>();
             builder.Services.AddTransient<AuthorVM>();
+            builder.Services.AddTransient<PublisherListVM>();
+            builder.Services.AddTransient<PublisherVM>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
@@ -30,7 +32,8 @@ namespace LibraryApp
             var app = builder.Build();
 
             var db = app.Services.GetService<DbService>();
-            Task.Run(async () => await db.Init());
+            if(db != null)
+                Task.Run(async () => await db.Init());
 
             return app;
         }
