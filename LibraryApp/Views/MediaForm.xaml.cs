@@ -2,9 +2,9 @@ using LibraryApp.ViewModels;
 
 namespace LibraryApp.Views;
 
-public partial class BookForm : ContentPage
+public partial class MediaForm : ContentPage
 {
-	public BookForm(BookVM vm)
+	public MediaForm(MediaVM vm)
 	{
 		InitializeComponent();
 		BindingContext = vm;

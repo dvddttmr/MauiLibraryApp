@@ -74,8 +74,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\BookForm.xaml.cs">
-	    <DependentUpon>BookForm.xaml</DependentUpon>
+	  <Compile Update="Views\MediaList.xaml.cs">
+	    <DependentUpon>MediaList.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\MediaForm.xaml.cs">
+	    <DependentUpon>MediaForm.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -89,10 +92,10 @@
 	  <MauiXaml Update="Views\AuthorList.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\BookList.xaml">
+	  <MauiXaml Update="Views\MediaList.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\BookForm.xaml">
+	  <MauiXaml Update="Views\MediaForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PublisherForm.xaml">

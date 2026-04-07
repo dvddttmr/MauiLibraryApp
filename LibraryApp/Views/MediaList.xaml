@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:LibraryApp.Models"
+             xmlns:viewModels="clr-namespace:LibraryApp.ViewModels"
+             x:Class="LibraryApp.Views.MediaList"
+             x:DataType="viewModels:MediaListVM"
+             Title="Media List">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add New Media Item" Command="{Binding NewMediaCommand}"/>
+    </ContentPage.ToolbarItems>
+    <VerticalStackLayout>
+        <Label 
+            Text="Media List"
+            FontSize="24"
+            FontAttributes="Bold"
+            TextDecorations="Underline"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <ScrollView>
+            <CollectionView ItemsSource="{Binding MediaList}"
+                            Margin="20"
+                            SelectionChangedCommand="{Binding SelectedMediaCommand}"
+                            SelectionMode="Single"
+                            SelectionChangedCommandParameter="{Binding x:DataType=CollectionView, Source={RelativeSource Self}, Path=SelectedItem}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Media">
+                        <HorizontalStackLayout>
+                            <Label Text="{Binding Title}"/>
+                            <Label Text="{Binding PublicationYear, StringFormat='({0})'}" TextColor="Silver"/>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentPage>

@@ -21,7 +21,7 @@ namespace LibraryApp.Services
         }
 
         #region Media
-        public async Task CreateMedia(Media media)
+        public async Task<int> CreateMedia(Media media)
         {
             try
             {
@@ -31,6 +31,8 @@ namespace LibraryApp.Services
             {
                 throw ex.GetBaseException();
             }
+
+            return media.Id;
         }
 
         public async Task<List<Media>>GetAllMedia()
@@ -174,11 +176,77 @@ namespace LibraryApp.Services
             }
         }
 
+        public async Task<MediaPerson> GetMediaPerson(int id)
+        {
+            return await db.Table<MediaPerson>().FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<List<MediaPerson>> GetMediaPersonsForPerson(int personId)
+        {
+            return await db.Table<MediaPerson>().Where(mp => mp.PersonId == personId).ToListAsync();
+        }
+
+        public async Task<List<MediaPerson>> GetMediaPersonsForMedia(int mediaId)
+        {
+            return await db.Table<MediaPerson>().Where(mp => mp.MediaId == mediaId).ToListAsync();
+        }
+
+        public async Task UpdateMediaPerson(MediaPerson mp)
+        {
+            await db.UpdateAsync(mp);
+        }
+
         public async Task DeleteMediaPerson(MediaPerson mp)
         {
             try
             {
                 await db.DeleteAsync(mp);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task DeleteMediaPerson(int id)
+        {
+            try
+            {
+                var mp = await GetMediaPerson(id);
+                if(mp is not null)
+                    await db.DeleteAsync(mp);
+            }
+            catch (Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task DeleteMediaPersonForPerson(int personId)
+        {
+            try
+            {
+                var mediaPersons = await GetMediaPersonsForPerson(personId);
+                foreach(var mp in mediaPersons)
+                {
+                    await DeleteMediaPerson(mp);
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task DeleteMediaPersonForMedia(int mediaId)
+        {
+            try
+            {
+                var mediaPersons = await GetMediaPersonsForMedia(mediaId);
+                foreach(var mp in mediaPersons)
+                {
+                    await DeleteMediaPerson(mp);
+                }
             }
             catch(Exception ex)
             {

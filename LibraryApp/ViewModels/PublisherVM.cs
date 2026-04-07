@@ -174,7 +174,7 @@ namespace LibraryApp.ViewModels
 
         public async Task SelectedWorkChanged(Media media)
         {
-            await Shell.Current.GoToAsync($"{nameof(BookForm)}?Id={media.Id}");
+            await Shell.Current.GoToAsync($"{nameof(MediaForm)}?Id={media.Id}");
         }
 
         #endregion
