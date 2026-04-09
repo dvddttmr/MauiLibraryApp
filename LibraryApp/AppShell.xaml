@@ -18,6 +18,9 @@
             Title="Publishers"
             ContentTemplate="{DataTemplate views:PublisherList}"/>
         <ShellContent
+            Title="Administration"
+            ContentTemplate="{DataTemplate views:Administration}"/>
+        <ShellContent
             Title="About"
             ContentTemplate="{DataTemplate views:About}"
             Icon="{FontImageSource Glyph='?',Size=22, Color=Black}"/>

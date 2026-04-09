@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:LibraryApp.Models"
              xmlns:viewModels="clr-namespace:LibraryApp.ViewModels"
-             x:Class="LibraryApp.Views.MediaForm"
-             x:DataType="viewModels:MediaVM"
-             Title="Media Item Form">
-    <VerticalStackLayout>
+             x:Class="LibraryApp.Views.Administration"
+             x:DataType="viewModels:AdminVM"
+             Title="Administration">
+    <VerticalStackLayout HorizontalOptions="Center">
         <Label 
-            Text="Media Item"
-            FontSize="24"
+            Text="Administration"
             FontAttributes="Bold"
             TextDecorations="Underline"
+            FontSize="24"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Entry Text="{Binding }" Placeholder="Title"/>
-        
+        <Button Text="Media Type" Command="{Binding MediaTypeCommand}"/>
+        <Button Text="Genre" Command="{Binding GenreCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

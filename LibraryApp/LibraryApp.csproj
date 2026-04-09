@@ -80,6 +80,15 @@
 	  <Compile Update="Views\MediaForm.xaml.cs">
 	    <DependentUpon>MediaForm.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\Administration.xaml.cs">
+	    <DependentUpon>Administration.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\MediaTypeForm.xaml.cs">
+	    <DependentUpon>MediaTypeForm.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\GenreForm.xaml.cs">
+	    <DependentUpon>GenreForm.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -96,6 +105,15 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MediaForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Administration.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MediaTypeForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\GenreForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PublisherForm.xaml">

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:LibraryApp.Models"
+             xmlns:viewModels="clr-namespace:LibraryApp.ViewModels"
+             x:Class="LibraryApp.Views.GenreForm"
+             x:DataType="viewModels:GenreVM"
+             Title="Genres"
+             x:Name="GenreForm">
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Picker x:Name="MediaTypePicker"
+                Title="Select Media Type"
+                ItemsSource="{Binding MediaTypeList}"
+                SelectedItem="{Binding SelectedMediaType}"/>
+
+        <CollectionView ItemsSource="{Binding GenreList}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedGenre}"
+                        HeightRequest="300">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Genre">
+                    <HorizontalStackLayout>
+                        <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                        <Button Text="Delete"
+                                Command="{Binding Source={x:Reference GenreForm}, Path=BindingContext.DeleteCommand}"
+                                CommandParameter="{Binding}"/>
+                    </HorizontalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label Text="Add or Edit Genre:"/>
+        <HorizontalStackLayout Spacing="10">
+            <Entry Placeholder="Genre Name"
+                   Text="{Binding NewGenreName}"/>
+            <Button Text="Save"
+                    Command="{Binding SaveCommand}"/>
+        </HorizontalStackLayout>
+        
+        <Button Text="Back to Admin"
+                Command="{Binding BackCommand}"/>
+    </VerticalStackLayout>
+</ContentPage>

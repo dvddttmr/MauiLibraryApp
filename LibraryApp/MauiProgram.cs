@@ -27,6 +27,8 @@ namespace LibraryApp
             builder.Services.AddTransient<PublisherVM>();
             builder.Services.AddTransient<MediaListVM>();
             builder.Services.AddTransient<MediaVM>();
+            builder.Services.AddTransient<MediaTypeVm>();
+            builder.Services.AddTransient<GenreVM>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

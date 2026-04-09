@@ -18,6 +18,8 @@ namespace LibraryApp.Services
             await RunWithTimeout(() => db.CreateTableAsync<Person>(), 3000);
             await RunWithTimeout(() => db.CreateTableAsync<MediaPerson>(), 3000);
             await RunWithTimeout(() => db.CreateTableAsync<Publisher>(),3000);
+            await RunWithTimeout(() => db.CreateTableAsync<MediaType>(), 3000);
+            await RunWithTimeout(() => db.CreateTableAsync<Genre>(), 3000);
         }
 
         #region Media
@@ -318,6 +320,167 @@ namespace LibraryApp.Services
                 throw ex.GetBaseException();
             }
         }
+
+        #endregion
+
+        #region MediaType
+
+        public async Task<int> CreateMediaType(MediaType mt)
+        {
+            try
+            {
+                await db.InsertAsync(mt);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+
+            return mt.Id;
+        }
+
+        public async Task<List<MediaType>> GetAllMediaTypes()
+        {
+            try
+            {
+                return await db.Table<MediaType>().ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task<MediaType> GetMediaType(int Id)
+        {
+            try
+            {
+                return await db.Table<MediaType>().FirstOrDefaultAsync(mt => mt.Id == Id);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task UpdateMediaType(MediaType mt)
+        {
+            try
+            {
+                await db.UpdateAsync(mt);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task DeleteMediaType(MediaType mt)
+        {
+            try
+            {
+                await db.DeleteAsync(mt);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        #endregion
+
+        #region Genre
+
+        public async Task<int> CreateGenre(Genre genre)
+        {
+            try
+            {
+                await db.InsertAsync(genre);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+
+            return genre.Id;
+        }
+
+        public async Task<List<Genre>> GetAllGenres()
+        {
+            try
+            {
+                return await db.Table<Genre>().ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task<List<Genre>> GetGenresForMediaType(int mediaTypeId)
+        {
+            try
+            {
+                return await db.Table<Genre>().Where(g => g.MediaTypeId == mediaTypeId).ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task<Genre> GetGenre(int id)
+        {
+            try
+            {
+                return await db.Table<Genre>().FirstOrDefaultAsync(g => g.Id == id);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task UpdateGenre(Genre genre)
+        {
+            try
+            {
+                await db.UpdateAsync(genre);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task DeleteGenre(Genre genre)
+        {
+            try
+            {
+                await db.DeleteAsync(genre);
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
+        public async Task DeleteGenreByMediaType(int mediaTypeId)
+        {
+            try
+            {
+                var genres = await GetGenresForMediaType(mediaTypeId);
+                foreach(var g in genres)
+                {
+                    await db.DeleteAsync(g);
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
+        }
+
 
         #endregion
 
