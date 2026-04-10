@@ -10,7 +10,7 @@
     <TabBar>
         <ShellContent
             Title="Books"
-            ContentTemplate="{DataTemplate views:BookList}"/>
+            ContentTemplate="{DataTemplate views:MediaList}"/>
         <ShellContent
             Title="Authors"
             ContentTemplate="{DataTemplate views:AuthorList}"/>

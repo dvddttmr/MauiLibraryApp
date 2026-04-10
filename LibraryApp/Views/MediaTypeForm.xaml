@@ -6,7 +6,7 @@
              x:Class="LibraryApp.Views.MediaTypeForm"
              x:DataType="viewModels:MediaTypeVm"
              Title="Media Types"
-             x:Name="PageVM">
+             x:Name="MediaTypeFormPage">
     <VerticalStackLayout Padding="20" Spacing="20">
         <Label 
             Text="Media Types"
@@ -17,15 +17,18 @@
             HorizontalOptions="Center" />
 
         <CollectionView ItemsSource="{Binding MediaTypeList}"
-                            SelectionMode="Single"
-                            SelectedItem="{Binding SelectedMediaType}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedMediaType}"
                         HeightRequest="300">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:MediaType">
-                    <HorizontalStackLayout Spacing="10">
-                        <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                    <HorizontalStackLayout Spacing="10" Margin="10">
+                        <Label Text="{Binding Name}" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="150"/>
                         <Button Text="Delete"
-                                    Command="{Binding Source={x:Reference PageVM}, Path=DeleteCommand}"
+                                    Command="{Binding Source={x:Reference MediaTypeFormPage}, Path=BindingContext.DeleteCommand}"
                                     CommandParameter="{Binding}"/>
                     </HorizontalStackLayout>
                 </DataTemplate>
@@ -36,9 +39,11 @@
 
         <HorizontalStackLayout>
             <Entry Placeholder="Media Type Name"
-                   Text="{Binding NewMediaTypeName}"/>
+                   Text="{Binding NewMediaTypeName}"
+                   WidthRequest="150"/>
             <Button Text="Save"
                     Command="{Binding SaveCommand}"/>
-        </HorizontalStackLayout>        
+        </HorizontalStackLayout>
+        <Button Text="Back to Admin" Command="{Binding CancelCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

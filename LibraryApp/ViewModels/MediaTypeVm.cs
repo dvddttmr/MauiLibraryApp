@@ -99,7 +99,8 @@ namespace LibraryApp.ViewModels
         public async Task LoadMediaTypeList()
         {
             MediaTypeList.Clear();
-            foreach(var mt in await db.GetAllMediaTypes())
+            var mediaTypes = await db.GetAllMediaTypes();
+            foreach (var mt in mediaTypes.OrderBy(m => m.Name))
             {
                 MediaTypeList.Add(mt);
             }

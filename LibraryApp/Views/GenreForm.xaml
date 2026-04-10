@@ -6,7 +6,7 @@
              x:Class="LibraryApp.Views.GenreForm"
              x:DataType="viewModels:GenreVM"
              Title="Genres"
-             x:Name="GenreForm">
+             x:Name="GenreFormPage">
     <VerticalStackLayout Padding="20" Spacing="20">
         <Picker x:Name="MediaTypePicker"
                 Title="Select Media Type"
@@ -20,9 +20,9 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Genre">
                     <HorizontalStackLayout>
-                        <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                        <Label Text="{Binding Name}" VerticalOptions="Center" WidthRequest="150"/>
                         <Button Text="Delete"
-                                Command="{Binding Source={x:Reference GenreForm}, Path=BindingContext.DeleteCommand}"
+                                Command="{Binding Source={x:Reference GenreFormPage}, Path=BindingContext.DeleteCommand}"
                                 CommandParameter="{Binding}"/>
                     </HorizontalStackLayout>
                 </DataTemplate>
@@ -32,12 +32,15 @@
         <Label Text="Add or Edit Genre:"/>
         <HorizontalStackLayout Spacing="10">
             <Entry Placeholder="Genre Name"
-                   Text="{Binding NewGenreName}"/>
+                   Text="{Binding NewGenreName}"
+                   WidthRequest="150"/>
             <Button Text="Save"
                     Command="{Binding SaveCommand}"/>
         </HorizontalStackLayout>
         
         <Button Text="Back to Admin"
-                Command="{Binding BackCommand}"/>
+                Command="{Binding BackCommand}"
+                WidthRequest="150"
+                HorizontalOptions="Center"/>
     </VerticalStackLayout>
 </ContentPage>

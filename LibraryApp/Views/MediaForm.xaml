@@ -14,7 +14,12 @@
             TextDecorations="Underline"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Entry Text="{Binding }" Placeholder="Title"/>
+        <Picker Title="Select Media Type"
+                ItemsSource="{Binding MediaTypes}"
+                SelectedItem="{Binding SelectedMediaType}"/>
+        <Entry Placeholder="Title"
+               Text="{Binding Title}"/>
         
+
     </VerticalStackLayout>
 </ContentPage>

@@ -12,10 +12,11 @@ namespace LibraryApp.ViewModels
     {
         private Media media;
         private readonly DbService db;
+        public ObservableCollection<MediaType> MediaTypes { get; set; } = [];
         public ObservableCollection<Person> Persons { get; set; } = [];
         public ObservableCollection<Publisher> Publishers { get; set; } = [];
 
-        public string MediaType
+        public string SelectedMediaType
         {
             get => media.MediaType;
             set
@@ -141,10 +142,20 @@ namespace LibraryApp.ViewModels
 
         public async void LoadLists()
         {
+            await GetMediaTypes();
             await GetPersons();
             await GetPublishers();
         }
 
+        public async Task GetMediaTypes()
+        {
+            MediaTypes.Clear();
+            var mediaTypes = await db.GetAllMediaTypes();
+            foreach(var mt in mediaTypes.OrderBy(m => m.Name))
+            {
+                MediaTypes.Add(mt);
+            }
+        }
         public async Task GetPersons()
         {
             Persons.Clear();
